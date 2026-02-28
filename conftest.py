@@ -30,7 +30,7 @@ def driver():
     Reutiliza el ejecutable de ChromeDriver ya instalado por webdriver-manager.
     """
     options = Options()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1920,1080")
@@ -39,8 +39,8 @@ def driver():
     browser = webdriver.Chrome(service=service, options=options)
     
     browser.implicitly_wait(config.IMPLICIT_WAIT)
-    # No es necesario maximizar en modo headless con un tamaño de ventana definido.
-    # browser.maximize_window()
+    # Maximizar la ventana para ver claramente la navegación
+    browser.maximize_window()
     
     yield browser
     

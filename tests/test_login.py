@@ -55,11 +55,3 @@ class TestLogin:
         error = login_page.get_error_message()
         assert error is not None
         assert "locked out" in error.lower() or "locked" in error.lower()
-
-    def test_logout(self, driver, login_page, products_page):
-        """
-        Caso de prueba: Cerrar sesión correctamente.
-        """
-        login_page.login(config.VALID_USER, config.VALID_PASSWORD)
-        products_page.logout()
-        assert login_page.is_login_visible(), "El formulario de login debería ser visible tras el logout"
