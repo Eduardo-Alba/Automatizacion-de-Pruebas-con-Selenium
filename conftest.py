@@ -19,22 +19,31 @@ def pytest_configure(config):
     )
 
 
+# Instalar y cachear el path del driver una sola vez al inicio
+_chrome_driver_path = ChromeDriverManager().install()
+
+
 @pytest.fixture(scope="function")
 def driver():
     """
     Crea y cierra el WebDriver para cada test.
-    Usa webdriver-manager para gestionar ChromeDriver automáticamente.
+    Reutiliza el ejecutable de ChromeDriver ya instalado por webdriver-manager.
     """
     options = Options()
-    options.add_argument("--headless")  # Descomenta para ver el navegador
+    options.add_argument("--headless")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--window-size=1920,1080")
-    service = Service(ChromeDriverManager().install())
+    
+    service = Service(_chrome_driver_path)
     browser = webdriver.Chrome(service=service, options=options)
+    
     browser.implicitly_wait(config.IMPLICIT_WAIT)
-    browser.maximize_window()
+    # No es necesario maximizar en modo headless con un tamaño de ventana definido.
+    # browser.maximize_window()
+    
     yield browser
+    
     browser.quit()
 
 

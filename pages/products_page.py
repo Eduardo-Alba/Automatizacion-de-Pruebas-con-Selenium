@@ -17,6 +17,7 @@ class ProductsPage(BasePage):
     MENU_BUTTON = (By.ID, "react-burger-menu-btn")
     LOGOUT_LINK = (By.ID, "logout_sidebar_link")
     SORT_DROPDOWN = (By.CLASS_NAME, "product_sort_container")
+    MENU = (By.CLASS_NAME, "bm-menu")
 
     def is_products_page(self):
         """Verifica que estamos en la página de productos."""
@@ -60,6 +61,8 @@ class ProductsPage(BasePage):
     def logout(self):
         """Abre el menú y cierra sesión."""
         self.wait_for_clickable(*self.MENU_BUTTON).click()
+        # Esperar a que el menú sea visible para evitar race conditions con la animación
+        self.wait_for_element(*self.MENU)
         self.wait_for_clickable(*self.LOGOUT_LINK).click()
 
     def sort_by(self, value):
